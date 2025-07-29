@@ -15,12 +15,14 @@
             "dest": "/staticfiles/favicon.ico"
         },
         {
-            "src": "/favicon.png",
-            "dest": "/staticfiles/favicon.ico"
-        },
-        {
             "src": "/(.*)",
             "dest": "vercel_app.py"
         }
-    ]
-} 
+    ],
+    "functions": {
+        "vercel_app.py": {
+            "runtime": "python3.9"
+        }
+    },
+    "buildCommand": "python vercel_build.py"
+}
