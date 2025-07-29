@@ -8,11 +8,11 @@
     "routes": [
         {
             "src": "/favicon.ico",
-            "dest": "/staticfiles/images/favicon.ico"
+            "dest": "/staticfiles/favicon.ico"
         },
         {
             "src": "/favicon.png",
-            "dest": "/staticfiles/images/favicon.png"
+            "dest": "/staticfiles/favicon.png"
         },
         {
             "src": "/static/(.*)",
