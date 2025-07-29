@@ -50,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'portfolio.middleware.StaticFilesMiddleware',  # Custom static files middleware
 ]
 
 ROOT_URLCONF = 'myportfolio.urls'
