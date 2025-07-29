@@ -7,16 +7,16 @@
     ],
     "routes": [
         {
+            "src": "/static/(.*)",
+            "dest": "/staticfiles/$1"
+        },
+        {
             "src": "/favicon.ico",
             "dest": "/staticfiles/favicon.ico"
         },
         {
             "src": "/favicon.png",
             "dest": "/staticfiles/favicon.ico"
-        },
-        {
-            "src": "/static/(.*)",
-            "dest": "/staticfiles/$1"
         },
         {
             "src": "/(.*)",
