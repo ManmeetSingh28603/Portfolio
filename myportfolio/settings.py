@@ -131,12 +131,10 @@ STATICFILES_FINDERS = [
 ]
 
 # WhiteNoise configuration for static files
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# For Vercel deployment
 if not DEBUG:
-    # WhiteNoise will handle static files in production
-    pass
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
 
 
 

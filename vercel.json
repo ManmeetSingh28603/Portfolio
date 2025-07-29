@@ -1,23 +1,14 @@
 {
     "builds": [
         {
-            "src": "wsgi.py",
+            "src": "vercel_app.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
-            "src": "/static/(.*)",
-            "dest": "/staticfiles/$1"
-        },
-        {
             "src": "/(.*)",
-            "dest": "wsgi.py"
+            "dest": "vercel_app.py"
         }
-    ],
-    "functions": {
-        "wsgi.py": {
-            "runtime": "python3.9"
-        }
-    }
+    ]
 }
