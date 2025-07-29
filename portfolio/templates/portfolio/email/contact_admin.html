@@ -1,0 +1,11 @@
+New Contact Form Submission
+
+Name: {{ contact.name }}
+Email: {{ contact.email }}
+Date: {{ contact.created_at|date:"F j, Y, g:i a" }}
+
+Message:
+{{ contact.message }}
+
+---
+This message was sent from your portfolio website contact form.

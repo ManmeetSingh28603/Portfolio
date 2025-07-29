@@ -1,6 +1,6 @@
 # Manmeet Singh - Portfolio Website
 
-A modern, responsive portfolio website built with Django and Tailwind CSS.
+A modern, responsive portfolio website built with Django and Tailwind CSS, optimized for production deployment on Vercel.
 
 ## Features
 
@@ -12,22 +12,28 @@ A modern, responsive portfolio website built with Django and Tailwind CSS.
 - 📄 Resume download functionality
 - 📧 Contact form
 - 🚀 Production-ready deployment configuration
+- 🔒 Security headers and best practices
+- 📊 Comprehensive logging
+- 🗄️ SQLite database (Vercel compatible)
 
 ## Tech Stack
 
 - **Backend**: Django 5.2.4
 - **Frontend**: Tailwind CSS (via CDN)
-- **Database**: SQLite (development) / PostgreSQL (production)
-- **Deployment**: Vercel, Heroku, Railway ready
+- **Database**: SQLite (Vercel compatible)
+- **Server**: Gunicorn
+- **Deployment**: Vercel (primary), Heroku, Railway ready
 
-## Local Development Setup
+## Quick Start
 
-### Prerequisites
+### Local Development Setup
+
+#### Prerequisites
 
 - Python 3.11+
 - pip
 
-### Installation
+#### Installation
 
 1. **Clone the repository**
 
@@ -55,9 +61,10 @@ A modern, responsive portfolio website built with Django and Tailwind CSS.
 4. **Set up environment variables**
 
    ```bash
-   # Copy the .env.example file
-   cp .env.example .env
-   # Edit .env with your settings
+   # Create .env file with your settings
+   echo SECRET_KEY=your-secret-key-here > .env
+   echo DEBUG=True >> .env
+   echo ALLOWED_HOSTS=localhost,127.0.0.1 >> .env
    ```
 
 5. **Run migrations**
@@ -86,14 +93,39 @@ A modern, responsive portfolio website built with Django and Tailwind CSS.
 Create a `.env` file in the root directory with the following variables:
 
 ```env
-SECRET_KEY=your-secret-key-here
+# Django Settings
+SECRET_KEY=your-super-secret-key-here-change-this-in-production
 DEBUG=False
 ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
+
+# Email Configuration (SMTP)
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+DEFAULT_FROM_EMAIL=your-email@gmail.com
+ADMIN_EMAIL=manmeetsingh28603@gmail.com
+
+# CORS Settings (optional)
+CORS_ALLOWED_ORIGINS=https://your-domain.com,https://www.your-domain.com
 ```
+
+### Setting up Gmail SMTP:
+
+1. **Enable 2-Factor Authentication** on your Gmail account
+2. **Generate an App Password:**
+   - Go to [Google Account settings](https://myaccount.google.com/)
+   - Security → 2-Step Verification → App passwords
+   - Select "Mail" and generate a password
+   - Use this password in `EMAIL_HOST_PASSWORD`
+3. **Update your .env file** with your actual Gmail credentials
+4. **Test the configuration** with: `python test_email.py`
 
 ## Production Deployment
 
-### Vercel Deployment
+### Vercel Deployment (Recommended)
 
 1. **Install Vercel CLI**
 
@@ -108,6 +140,23 @@ ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
    ```
 
 3. **Set environment variables in Vercel dashboard**
+
+   - Go to your project settings in Vercel
+   - Add environment variables:
+     - `SECRET_KEY`: Your Django secret key
+     - `DEBUG`: `False`
+     - `ALLOWED_HOSTS`: Your Vercel domain
+     - `EMAIL_BACKEND`: `django.core.mail.backends.console.EmailBackend`
+     - `EMAIL_HOST_USER`: Your Gmail address
+     - `EMAIL_HOST_PASSWORD`: Your Gmail app password
+     - `DEFAULT_FROM_EMAIL`: Your Gmail address
+     - `ADMIN_EMAIL`: Your email address
+
+4. **Important Vercel Notes:**
+   - Email functionality uses console backend on Vercel (no SMTP)
+   - Static files are automatically served
+   - Database is SQLite (resets on each deployment)
+   - For persistent data, consider using external database
 
 ### Heroku Deployment
 
@@ -142,6 +191,29 @@ ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
 2. **Set environment variables in Railway dashboard**
 3. **Deploy automatically on push**
 
+## Security Features
+
+- Environment variable management
+- Production security headers
+- CSRF protection
+- XSS protection
+- HSTS headers
+- Secure cookie settings
+- Content Security Policy (CSP)
+- CORS configuration
+- Session security
+- Comprehensive logging
+
+## Performance Optimizations
+
+- Static file collection and serving with WhiteNoise
+- CDN for Tailwind CSS
+- Optimized images
+- Minimal JavaScript
+- Efficient CSS with Tailwind
+- Database optimization
+- Caching configuration
+
 ## Project Structure
 
 ```
@@ -151,7 +223,7 @@ portfoliomy/
 │   ├── templates/        # HTML templates
 │   ├── static/          # Static files (CSS, JS, images)
 │   └── views.py         # View functions
-├── staticfiles/         # Collected static files (production)
+├── logs/                # Application logs
 ├── .env                 # Environment variables
 ├── requirements.txt     # Python dependencies
 ├── vercel.json         # Vercel configuration
@@ -179,22 +251,12 @@ portfoliomy/
 2. Update color classes in template files
 3. Modify dark/light mode colors as needed
 
-## Security Features
+## Monitoring and Logging
 
-- Environment variable management
-- Production security headers
-- CSRF protection
-- XSS protection
-- HSTS headers
-- Secure cookie settings
-
-## Performance Optimizations
-
-- Static file collection and serving
-- CDN for Tailwind CSS
-- Optimized images
-- Minimal JavaScript
-- Efficient CSS with Tailwind
+- Application logs are stored in `logs/django.log`
+- Health check endpoint available at `/health/`
+- Comprehensive error logging
+- Performance monitoring ready
 
 ## Contributing
 
