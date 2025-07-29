@@ -4,9 +4,5 @@ pip install -r requirements.txt
 python manage.py collectstatic --noinput --clear
 python manage.py migrate --noinput
 echo "Static files collected successfully!"
-echo "Contents of staticfiles directory:"
-ls -la staticfiles/
-echo "Contents of staticfiles/images directory:"
-ls -la staticfiles/images/
-echo "Favicon files:"
-ls -la staticfiles/favicon.* 
+echo "Favicon file:"
+ls -la staticfiles/favicon.ico 
