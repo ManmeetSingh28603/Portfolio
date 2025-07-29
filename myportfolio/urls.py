@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('portfolio.urls')),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
+    path('favicon.png', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
 ]
 
 # Serve static files during development
