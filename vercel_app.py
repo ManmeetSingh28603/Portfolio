@@ -7,7 +7,7 @@ project_dir = Path(__file__).resolve().parent
 sys.path.insert(0, str(project_dir))
 
 # Set Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myportfolio.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myportfolio.vercel_settings')
 
 # Import Django WSGI application
 from django.core.wsgi import get_wsgi_application
