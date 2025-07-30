@@ -129,6 +129,14 @@ def send_contact_email(contact):
 def send_contact_email_vercel(contact_data):
     """Send email notification for new contact form submission on Vercel (no database)"""
     try:
+        # Debug email settings
+        logger.info(f"Email settings - BACKEND: {settings.EMAIL_BACKEND}")
+        logger.info(f"Email settings - HOST: {settings.EMAIL_HOST}")
+        logger.info(f"Email settings - PORT: {settings.EMAIL_PORT}")
+        logger.info(f"Email settings - USER: {settings.EMAIL_HOST_USER}")
+        logger.info(f"Email settings - FROM: {settings.DEFAULT_FROM_EMAIL}")
+        logger.info(f"Email settings - ADMIN: {settings.ADMIN_EMAIL}")
+        
         subject = f'New Contact Form Message from {contact_data["name"]}'
         
         # Email to admin
@@ -136,6 +144,7 @@ def send_contact_email_vercel(contact_data):
             'contact': contact_data
         })
         
+        logger.info(f"Sending admin email to: {settings.ADMIN_EMAIL}")
         send_mail(
             subject=subject,
             message=admin_message,
@@ -149,6 +158,7 @@ def send_contact_email_vercel(contact_data):
             'contact': contact_data
         })
         
+        logger.info(f"Sending confirmation email to: {contact_data['email']}")
         send_mail(
             subject='Thank you for contacting me!',
             message=sender_message,
@@ -161,4 +171,5 @@ def send_contact_email_vercel(contact_data):
         
     except Exception as e:
         logger.error(f"Error sending contact email on Vercel: {e}")
+        logger.error(f"Error details: {str(e)}")
         raise

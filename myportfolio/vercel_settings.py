@@ -35,18 +35,35 @@ if IS_VERCEL:
     
     # Option 2: Resend (recommended - free up to 100 emails/day)
     # First install: pip install resend
+    # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    # EMAIL_HOST = 'smtp.resend.com'
+    # EMAIL_PORT = 587
+    # EMAIL_USE_TLS = True
+    # EMAIL_HOST_USER = 'resend'
+    # EMAIL_HOST_PASSWORD = os.environ.get('RESEND_API_KEY', '')
+    # DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'manmeetsingh28603@gmail.com')
+    
+    # Gmail SMTP Configuration
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.resend.com'
+    EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'resend'
-    EMAIL_HOST_PASSWORD = os.environ.get('RESEND_API_KEY', '')
-    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'manmeetsingh28603@gmail.com')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'manmeetsingh28603@gmail.com')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    
+    # Debug email configuration
+    print(f"Email configuration:")
+    print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
+    print(f"EMAIL_HOST_PASSWORD: {'*' * len(EMAIL_HOST_PASSWORD) if EMAIL_HOST_PASSWORD else 'NOT SET'}")
+    print(f"EMAIL_BACKEND: {EMAIL_BACKEND}")
     
     # Fallback to console if no email credentials are set
     if not EMAIL_HOST_PASSWORD:
         EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
         print("Warning: No email credentials found. Using console backend.")
+    else:
+        print("Email credentials found. Using SMTP backend.")
     
     # Configure static files for Vercel
     # On Vercel, we need to use a different approach for static files
