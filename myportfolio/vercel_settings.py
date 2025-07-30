@@ -23,8 +23,30 @@ if IS_VERCEL:
     if VERCEL_DOMAIN:
         ALLOWED_HOSTS = list(ALLOWED_HOSTS) + [VERCEL_DOMAIN] if isinstance(ALLOWED_HOSTS, (list, tuple)) else [VERCEL_DOMAIN]
     
-    # Use console email backend on Vercel (no SMTP)
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    # Configure email backend for Vercel
+    # Option 1: Gmail SMTP (requires App Password)
+    # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    # EMAIL_HOST = 'smtp.gmail.com'
+    # EMAIL_PORT = 587
+    # EMAIL_USE_TLS = True
+    # EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'manmeetsingh28603@gmail.com')
+    # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')  # Use App Password from Gmail
+    # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    
+    # Option 2: Resend (recommended - free up to 100 emails/day)
+    # First install: pip install resend
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.resend.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'resend'
+    EMAIL_HOST_PASSWORD = os.environ.get('RESEND_API_KEY', '')
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'manmeetsingh28603@gmail.com')
+    
+    # Fallback to console if no email credentials are set
+    if not EMAIL_HOST_PASSWORD:
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+        print("Warning: No email credentials found. Using console backend.")
     
     # Disable file-based logging and use console logging instead
     # This prevents the FileNotFoundError on Vercel's serverless environment
