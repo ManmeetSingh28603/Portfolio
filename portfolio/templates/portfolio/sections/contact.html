@@ -120,6 +120,14 @@
                         <label for="{{ contact_form.message.id_for_label }}"
                             class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Message</label>
                         {{ contact_form.message }}
+                        <div class="flex justify-between items-center mt-1">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                <span id="charCount">0</span>/2000 characters
+                            </div>
+                            <div class="text-xs text-gray-400 dark:text-gray-500">
+                                Minimum 10 characters required
+                            </div>
+                        </div>
                         {% if contact_form.message.errors %}
                         <div class="text-red-600 text-sm mt-1">
                             {% for error in contact_form.message.errors %}
@@ -176,11 +184,136 @@
             const buttonContent = document.getElementById('buttonContent');
             const loadingContent = document.getElementById('loadingContent');
             const successContent = document.getElementById('successContent');
+            
+            // Get form fields
+            const nameField = document.getElementById('{{ contact_form.name.id_for_label }}');
+            const emailField = document.getElementById('{{ contact_form.email.id_for_label }}');
+            const messageField = document.getElementById('{{ contact_form.message.id_for_label }}');
+            
+            // Add real-time validation
+            if (nameField) {
+                nameField.addEventListener('input', function() {
+                    validateName(this.value);
+                });
+            }
+            
+            if (emailField) {
+                emailField.addEventListener('input', function() {
+                    validateEmail(this.value);
+                });
+            }
+            
+            if (messageField) {
+                messageField.addEventListener('input', function() {
+                    validateMessage(this.value);
+                    updateCharCount(this.value);
+                });
+            }
+            
+            // Character counter function
+            function updateCharCount(text) {
+                const charCount = document.getElementById('charCount');
+                if (charCount) {
+                    const count = text.length;
+                    charCount.textContent = count;
+                    
+                    // Change color based on length
+                    if (count < 10) {
+                        charCount.className = 'text-red-500';
+                    } else if (count > 1800) {
+                        charCount.className = 'text-orange-500';
+                    } else {
+                        charCount.className = 'text-gray-500 dark:text-gray-400';
+                    }
+                }
+            }
+
+            // Validation functions
+            function validateName(name) {
+                const nameError = nameField.parentNode.querySelector('.field-error');
+                if (nameError) nameError.remove();
+                
+                if (!name.trim()) {
+                    showFieldError(nameField, 'Name is required.');
+                    return false;
+                }
+                if (name.trim().length < 2) {
+                    showFieldError(nameField, 'Name must be at least 2 characters long.');
+                    return false;
+                }
+                clearFieldError(nameField);
+                return true;
+            }
+            
+            function validateEmail(email) {
+                const emailError = emailField.parentNode.querySelector('.field-error');
+                if (emailError) emailError.remove();
+                
+                if (!email.trim()) {
+                    showFieldError(emailField, 'Email is required.');
+                    return false;
+                }
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showFieldError(emailField, 'Please enter a valid email address.');
+                    return false;
+                }
+                
+                clearFieldError(emailField);
+                return true;
+            }
+            
+            function validateMessage(message) {
+                const messageError = messageField.parentNode.querySelector('.field-error');
+                if (messageError) messageError.remove();
+                
+                if (!message.trim()) {
+                    showFieldError(messageField, 'Message is required.');
+                    return false;
+                }
+                if (message.trim().length < 10) {
+                    showFieldError(messageField, 'Message must be at least 10 characters long.');
+                    return false;
+                }
+                if (message.trim().length > 2000) {
+                    showFieldError(messageField, 'Message is too long. Please keep it under 2000 characters.');
+                    return false;
+                }
+                clearFieldError(messageField);
+                return true;
+            }
+            
+            function showFieldError(field, message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'field-error text-red-600 text-sm mt-1';
+                errorDiv.textContent = message;
+                field.parentNode.appendChild(errorDiv);
+                field.classList.add('border-red-500');
+            }
+            
+            function clearFieldError(field) {
+                const errorDiv = field.parentNode.querySelector('.field-error');
+                if (errorDiv) errorDiv.remove();
+                field.classList.remove('border-red-500');
+            }
+            
+            function validateForm() {
+                const nameValid = validateName(nameField.value);
+                const emailValid = validateEmail(emailField.value);
+                const messageValid = validateMessage(messageField.value);
+                return nameValid && emailValid && messageValid;
+            }
 
             if (form && submitBtn) {
                 form.addEventListener('submit', function (e) {
                     // Prevent default form submission
                     e.preventDefault();
+
+                    // Validate form before submission
+                    if (!validateForm()) {
+                        return;
+                    }
 
                     // Show loading state
                     showLoadingState();
@@ -212,6 +345,14 @@
 
                                 // Reset form
                                 form.reset();
+                                
+                                // Reset character counter
+                                updateCharCount('');
+                                
+                                // Clear any field errors
+                                clearFieldError(nameField);
+                                clearFieldError(emailField);
+                                clearFieldError(messageField);
 
                                 // Hide success state after 3 seconds and reset button
                                 setTimeout(() => {

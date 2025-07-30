@@ -8,6 +8,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from .forms import ContactForm
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -21,11 +22,17 @@ def home(request):
         contact_form = ContactForm(request.POST)
         if contact_form.is_valid():
             try:
-                # Save the contact message
-                contact = contact_form.save()
+                # Check if we're on Vercel (serverless environment)
+                is_vercel = getattr(settings, 'IS_VERCEL', False) or 'VERCEL_ENV' in os.environ
                 
-                # Send email notification
-                send_contact_email(contact)
+                if is_vercel:
+                    # On Vercel, don't save to database, just send email
+                    contact_data = contact_form.cleaned_data
+                    send_contact_email_vercel(contact_data)
+                else:
+                    # On local/other environments, save to database
+                    contact = contact_form.save()
+                    send_contact_email(contact)
                 
                 # Check if it's an AJAX request
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -38,7 +45,7 @@ def home(request):
                     return redirect('portfolio:home')
                 
             except Exception as e:
-                logger.error(f"Error saving contact form: {e}")
+                logger.error(f"Error processing contact form: {e}")
                 error_message = 'Sorry, there was an error sending your message. Please try again.'
                 
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -117,4 +124,41 @@ def send_contact_email(contact):
         
     except Exception as e:
         logger.error(f"Error sending contact email: {e}")
+        raise
+
+def send_contact_email_vercel(contact_data):
+    """Send email notification for new contact form submission on Vercel (no database)"""
+    try:
+        subject = f'New Contact Form Message from {contact_data["name"]}'
+        
+        # Email to admin
+        admin_message = render_to_string('portfolio/email/contact_admin.html', {
+            'contact': contact_data
+        })
+        
+        send_mail(
+            subject=subject,
+            message=admin_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.ADMIN_EMAIL],
+            fail_silently=False,
+        )
+        
+        # Email to sender (confirmation)
+        sender_message = render_to_string('portfolio/email/contact_confirmation.html', {
+            'contact': contact_data
+        })
+        
+        send_mail(
+            subject='Thank you for contacting me!',
+            message=sender_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[contact_data['email']],
+            fail_silently=False,
+        )
+        
+        logger.info(f"Contact email sent successfully for {contact_data['email']} (Vercel)")
+        
+    except Exception as e:
+        logger.error(f"Error sending contact email on Vercel: {e}")
         raise

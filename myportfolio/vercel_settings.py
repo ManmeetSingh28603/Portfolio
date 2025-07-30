@@ -11,6 +11,9 @@ from .settings import *
 # Vercel environment detection
 IS_VERCEL = os.environ.get('VERCEL_ENV') is not None
 
+# Set the IS_VERCEL flag in settings
+IS_VERCEL = True
+
 if IS_VERCEL:
     # Force debug to False on Vercel
     DEBUG = False
