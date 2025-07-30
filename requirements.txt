@@ -19,5 +19,4 @@ django-csp==4.0
 # Email service (Resend)
 resend==0.8.0
 
-# Development tools (optional)
-# python-dotenv==1.0.0  # Uncomment for local development
+

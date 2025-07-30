@@ -52,18 +52,9 @@ if IS_VERCEL:
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
     
-    # Debug email configuration
-    print(f"Email configuration:")
-    print(f"EMAIL_HOST_USER: {EMAIL_HOST_USER}")
-    print(f"EMAIL_HOST_PASSWORD: {'*' * len(EMAIL_HOST_PASSWORD) if EMAIL_HOST_PASSWORD else 'NOT SET'}")
-    print(f"EMAIL_BACKEND: {EMAIL_BACKEND}")
-    
     # Fallback to console if no email credentials are set
     if not EMAIL_HOST_PASSWORD:
         EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-        print("Warning: No email credentials found. Using console backend.")
-    else:
-        print("Email credentials found. Using SMTP backend.")
     
     # Configure static files for Vercel
     # On Vercel, we need to use a different approach for static files

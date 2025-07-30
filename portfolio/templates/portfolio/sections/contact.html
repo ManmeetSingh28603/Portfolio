@@ -25,12 +25,21 @@
                                 </path>
                             </svg>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <p class="font-semibold text-gray-900 dark:text-gray-100">Email</p>
                             <p
                                 class="text-gray-600 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
                                 manmeetsingh28603@gmail.com</p>
                         </div>
+                        <button id="copyEmailBtn"
+                            class="ml-2 p-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            title="Copy email to clipboard">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </button>
                     </div>
                     <div
                         class="group flex items-center p-4 rounded-xl bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg border border-gray-200 dark:border-slate-600">
@@ -184,39 +193,39 @@
             const buttonContent = document.getElementById('buttonContent');
             const loadingContent = document.getElementById('loadingContent');
             const successContent = document.getElementById('successContent');
-            
+
             // Get form fields
             const nameField = document.getElementById('{{ contact_form.name.id_for_label }}');
             const emailField = document.getElementById('{{ contact_form.email.id_for_label }}');
             const messageField = document.getElementById('{{ contact_form.message.id_for_label }}');
-            
+
             // Add real-time validation
             if (nameField) {
-                nameField.addEventListener('input', function() {
+                nameField.addEventListener('input', function () {
                     validateName(this.value);
                 });
             }
-            
+
             if (emailField) {
-                emailField.addEventListener('input', function() {
+                emailField.addEventListener('input', function () {
                     validateEmail(this.value);
                 });
             }
-            
+
             if (messageField) {
-                messageField.addEventListener('input', function() {
+                messageField.addEventListener('input', function () {
                     validateMessage(this.value);
                     updateCharCount(this.value);
                 });
             }
-            
+
             // Character counter function
             function updateCharCount(text) {
                 const charCount = document.getElementById('charCount');
                 if (charCount) {
                     const count = text.length;
                     charCount.textContent = count;
-                    
+
                     // Change color based on length
                     if (count < 10) {
                         charCount.className = 'text-red-500';
@@ -232,7 +241,7 @@
             function validateName(name) {
                 const nameError = nameField.parentNode.querySelector('.field-error');
                 if (nameError) nameError.remove();
-                
+
                 if (!name.trim()) {
                     showFieldError(nameField, 'Name is required.');
                     return false;
@@ -244,30 +253,30 @@
                 clearFieldError(nameField);
                 return true;
             }
-            
+
             function validateEmail(email) {
                 const emailError = emailField.parentNode.querySelector('.field-error');
                 if (emailError) emailError.remove();
-                
+
                 if (!email.trim()) {
                     showFieldError(emailField, 'Email is required.');
                     return false;
                 }
-                
+
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     showFieldError(emailField, 'Please enter a valid email address.');
                     return false;
                 }
-                
+
                 clearFieldError(emailField);
                 return true;
             }
-            
+
             function validateMessage(message) {
                 const messageError = messageField.parentNode.querySelector('.field-error');
                 if (messageError) messageError.remove();
-                
+
                 if (!message.trim()) {
                     showFieldError(messageField, 'Message is required.');
                     return false;
@@ -283,7 +292,7 @@
                 clearFieldError(messageField);
                 return true;
             }
-            
+
             function showFieldError(field, message) {
                 const errorDiv = document.createElement('div');
                 errorDiv.className = 'field-error text-red-600 text-sm mt-1';
@@ -291,13 +300,13 @@
                 field.parentNode.appendChild(errorDiv);
                 field.classList.add('border-red-500');
             }
-            
+
             function clearFieldError(field) {
                 const errorDiv = field.parentNode.querySelector('.field-error');
                 if (errorDiv) errorDiv.remove();
                 field.classList.remove('border-red-500');
             }
-            
+
             function validateForm() {
                 const nameValid = validateName(nameField.value);
                 const emailValid = validateEmail(emailField.value);
@@ -345,10 +354,10 @@
 
                                 // Reset form
                                 form.reset();
-                                
+
                                 // Reset character counter
                                 updateCharCount('');
-                                
+
                                 // Clear any field errors
                                 clearFieldError(nameField);
                                 clearFieldError(emailField);
@@ -417,6 +426,49 @@
                 submitBtn.classList.add('from-blue-600', 'to-purple-600');
                 submitBtn.classList.add('hover:shadow-2xl', 'hover:shadow-blue-500/25', 'hover:-translate-y-1', 'hover:scale-105');
                 document.getElementById('buttonText').textContent = 'Send Message';
+            }
+
+            // Copy to clipboard functionality
+            const copyEmailBtn = document.getElementById('copyEmailBtn');
+            if (copyEmailBtn) {
+                copyEmailBtn.addEventListener('click', function () {
+                    const email = 'manmeetsingh28603@gmail.com';
+
+                    // Create a temporary textarea to copy text
+                    const textarea = document.createElement('textarea');
+                    textarea.value = email;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+
+                    // Show success animation
+                    const originalHTML = copyEmailBtn.innerHTML;
+                    copyEmailBtn.innerHTML = `
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    `;
+                    copyEmailBtn.classList.add('bg-gradient-to-r', 'from-green-600', 'to-emerald-600');
+                    copyEmailBtn.classList.remove('from-blue-600', 'to-purple-600');
+
+                    // Show tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1 rounded-lg whitespace-nowrap z-50';
+                    tooltip.textContent = 'Email copied!';
+                    copyEmailBtn.parentNode.style.position = 'relative';
+                    copyEmailBtn.parentNode.appendChild(tooltip);
+
+                    // Remove tooltip and reset button after 2 seconds
+                    setTimeout(() => {
+                        copyEmailBtn.innerHTML = originalHTML;
+                        copyEmailBtn.classList.remove('from-green-600', 'to-emerald-600');
+                        copyEmailBtn.classList.add('from-blue-600', 'to-purple-600');
+                        if (tooltip.parentNode) {
+                            tooltip.parentNode.removeChild(tooltip);
+                        }
+                    }, 2000);
+                });
             }
         });
     </script>

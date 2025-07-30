@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from .forms import ContactForm
@@ -25,14 +25,18 @@ def home(request):
                 # Check if we're on Vercel (serverless environment)
                 is_vercel = getattr(settings, 'IS_VERCEL', False) or 'VERCEL_ENV' in os.environ
                 
-                if is_vercel:
-                    # On Vercel, don't save to database, just send email
-                    contact_data = contact_form.cleaned_data
-                    send_contact_email_vercel(contact_data)
-                else:
-                    # On local/other environments, save to database
+                # Try to save to database first (for admin panel)
+                try:
                     contact = contact_form.save()
                     send_contact_email(contact)
+                except Exception as db_error:
+                    logger.warning(f"Could not save to database: {db_error}")
+                    # Fallback: send email without database
+                    contact_data = contact_form.cleaned_data
+                    # Add current date for email templates
+                    from django.utils import timezone
+                    contact_data['created_at'] = timezone.now()
+                    send_contact_email_vercel(contact_data)
                 
                 # Check if it's an AJAX request
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -99,26 +103,30 @@ def send_contact_email(contact):
             'contact': contact
         })
         
-        send_mail(
+        # Create HTML email for admin
+        admin_email = EmailMessage(
             subject=subject,
-            message=admin_message,
+            body=admin_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.ADMIN_EMAIL],
-            fail_silently=False,
+            to=[settings.ADMIN_EMAIL],
         )
+        admin_email.content_subtype = "html"
+        admin_email.send()
         
         # Email to sender (confirmation)
         sender_message = render_to_string('portfolio/email/contact_confirmation.html', {
             'contact': contact
         })
         
-        send_mail(
-            subject='Thank you for contacting me!',
-            message=sender_message,
+        # Create HTML email for sender
+        sender_email = EmailMessage(
+            subject='Thank you for Reaching out to me!',
+            body=sender_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[contact.email],
-            fail_silently=False,
+            to=[contact.email],
         )
+        sender_email.content_subtype = "html"
+        sender_email.send()
         
         logger.info(f"Contact email sent successfully for {contact.email}")
         
@@ -145,13 +153,15 @@ def send_contact_email_vercel(contact_data):
         })
         
         logger.info(f"Sending admin email to: {settings.ADMIN_EMAIL}")
-        send_mail(
+        # Create HTML email for admin
+        admin_email = EmailMessage(
             subject=subject,
-            message=admin_message,
+            body=admin_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[settings.ADMIN_EMAIL],
-            fail_silently=False,
+            to=[settings.ADMIN_EMAIL],
         )
+        admin_email.content_subtype = "html"
+        admin_email.send()
         
         # Email to sender (confirmation)
         sender_message = render_to_string('portfolio/email/contact_confirmation.html', {
@@ -159,13 +169,15 @@ def send_contact_email_vercel(contact_data):
         })
         
         logger.info(f"Sending confirmation email to: {contact_data['email']}")
-        send_mail(
+        # Create HTML email for sender
+        sender_email = EmailMessage(
             subject='Thank you for contacting me!',
-            message=sender_message,
+            body=sender_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[contact_data['email']],
-            fail_silently=False,
+            to=[contact_data['email']],
         )
+        sender_email.content_subtype = "html"
+        sender_email.send()
         
         logger.info(f"Contact email sent successfully for {contact_data['email']} (Vercel)")
         
