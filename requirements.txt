@@ -16,7 +16,4 @@ python-decouple==3.8
 django-cors-headers==4.7.0
 django-csp==4.0
 
-# Email service (Resend)
-resend==0.8.0
-
 

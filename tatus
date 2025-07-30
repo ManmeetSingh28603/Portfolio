@@ -1,5 +1,0 @@
-[33m010e885[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m Final cleanup for Vercel deployment
-[33m05138b2[m Add email debugging for Vercel deployment
-[33ma9c3aaf[m Fix static files for Vercel
-[33mac05293[m Configure email backend for Vercel deployment - Add Resend email service support - Add Gmail SMTP configuration - Add fallback to console backend
-[33md564999[m Fix contact form for Vercel deployment and add enhanced validation
