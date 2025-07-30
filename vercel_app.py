@@ -16,9 +16,8 @@ from django.contrib.staticfiles.handlers import StaticFilesHandler
 # Get the WSGI application
 application = get_wsgi_application()
 
-# For Vercel - serve static files in development
-if os.environ.get('VERCEL_ENV') == 'development':
-    application = StaticFilesHandler(application)
+# For Vercel - always serve static files
+application = StaticFilesHandler(application)
 
 # For Vercel
 app = application 

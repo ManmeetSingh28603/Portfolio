@@ -48,6 +48,21 @@ if IS_VERCEL:
         EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
         print("Warning: No email credentials found. Using console backend.")
     
+    # Configure static files for Vercel
+    # On Vercel, we need to use a different approach for static files
+    STATIC_URL = '/static/'
+    
+    # Try to use /tmp directory for static files (writable on Vercel)
+    import tempfile
+    STATIC_ROOT = tempfile.gettempdir() + '/staticfiles'
+    
+    # Use WhiteNoise for static file serving
+    STATICFILES_STORAGE = 'whitenoise.storage.StaticFilesStorage'
+    
+    # Ensure static files are served even if collectstatic hasn't been run
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
+    
     # Disable file-based logging and use console logging instead
     # This prevents the FileNotFoundError on Vercel's serverless environment
     LOGGING = {
