@@ -3,15 +3,18 @@
     class="fixed w-full z-30 transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border-b border-gray-200/50 dark:border-slate-700/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
+            <!-- Logo and Brand -->
             <div class="flex items-center">
                 <img src="https://res.cloudinary.com/dhtonu8ki/image/upload/v1753806205/favicon_vyqbz1.png"
-                    alt="Portfolio Logo" class="w-10 h-10 mr-3 rounded-full">
+                    alt="Portfolio Logo" class="w-8 h-8 sm:w-10 sm:h-10 mr-2 sm:mr-3 rounded-full">
                 <h1
-                    class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    class="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                     My Portfolio
                 </h1>
             </div>
-            <div class="flex items-center space-x-8">
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
                 <a href="#home"
                     class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 hover:scale-110 transform">Home</a>
                 <a href="#about"
@@ -23,7 +26,7 @@
                 <a href="#resume"
                     class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 hover:scale-110 transform">Resume</a>
 
-                <!-- Dark/Light Mode Toggle -->
+                <!-- Dark/Light Mode Toggle (Desktop) -->
                 <button id="themeToggle"
                     class="p-2 rounded-lg bg-gray-200/50 dark:bg-slate-700/50 hover:bg-gray-200/70 dark:hover:bg-slate-700/70 transition-all duration-300 transform hover:scale-110">
                     <!-- Sun Icon (Light Mode) -->
@@ -42,6 +45,52 @@
                     </svg>
                 </button>
             </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center space-x-2">
+                <!-- Dark/Light Mode Toggle for Mobile -->
+                <button id="themeToggleMobile"
+                    class="p-2 rounded-lg bg-gray-200/50 dark:bg-slate-700/50 hover:bg-gray-200/70 dark:hover:bg-slate-700/70 transition-all duration-300">
+                    <!-- Sun Icon (Light Mode) -->
+                    <svg id="sunIconMobile" class="w-5 h-5 text-yellow-400 hidden" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <!-- Moon Icon (Dark Mode) -->
+                    <svg id="moonIconMobile" class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+
+                <!-- Hamburger Menu Button -->
+                <button id="mobileMenuBtn"
+                    class="p-2 rounded-lg bg-gray-200/50 dark:bg-slate-700/50 hover:bg-gray-200/70 dark:hover:bg-slate-700/70 transition-all duration-300">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md rounded-lg mt-2 border border-gray-200/50 dark:border-slate-700/50">
+                <a href="#home"
+                    class="block px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/50 dark:hover:bg-slate-700/50 rounded-md transition-all duration-300">Home</a>
+                <a href="#about"
+                    class="block px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/50 dark:hover:bg-slate-700/50 rounded-md transition-all duration-300">About</a>
+                <a href="#projects"
+                    class="block px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/50 dark:hover:bg-slate-700/50 rounded-md transition-all duration-300">Projects</a>
+                <a href="#contact"
+                    class="block px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/50 dark:hover:bg-slate-700/50 rounded-md transition-all duration-300">Contact</a>
+                <a href="#resume"
+                    class="block px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100/50 dark:hover:bg-slate-700/50 rounded-md transition-all duration-300">Resume</a>
+            </div>
         </div>
     </div>
 </nav>
@@ -59,19 +108,88 @@
         }
     });
 
-    // Update theme toggle icons
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function () {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function () {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    // Open menu
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('animate-slide-down');
+                    // Change to X icon
+                    mobileMenuBtn.innerHTML = `
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    `;
+                } else {
+                    // Close menu
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('animate-slide-down');
+                    // Change back to hamburger icon
+                    mobileMenuBtn.innerHTML = `
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    `;
+                }
+            });
+
+            // Close mobile menu when clicking on links
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('animate-slide-down');
+                    // Reset hamburger icon
+                    mobileMenuBtn.innerHTML = `
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    `;
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!mobileMenuBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('animate-slide-down');
+                    // Reset hamburger icon
+                    mobileMenuBtn.innerHTML = `
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    `;
+                }
+            });
+        }
+    });
+
+    // Update theme toggle icons for both desktop and mobile
     function updateThemeIcons() {
         const sunIcon = document.getElementById('sunIcon');
         const moonIcon = document.getElementById('moonIcon');
+        const sunIconMobile = document.getElementById('sunIconMobile');
+        const moonIconMobile = document.getElementById('moonIconMobile');
         const html = document.documentElement;
         const isDark = html.classList.contains('dark');
 
         if (isDark) {
-            sunIcon.classList.add('hidden');
-            moonIcon.classList.remove('hidden');
+            if (sunIcon) sunIcon.classList.add('hidden');
+            if (moonIcon) moonIcon.classList.remove('hidden');
+            if (sunIconMobile) sunIconMobile.classList.add('hidden');
+            if (moonIconMobile) moonIconMobile.classList.remove('hidden');
         } else {
-            sunIcon.classList.remove('hidden');
-            moonIcon.classList.add('hidden');
+            if (sunIcon) sunIcon.classList.remove('hidden');
+            if (moonIcon) moonIcon.classList.add('hidden');
+            if (sunIconMobile) sunIconMobile.classList.remove('hidden');
+            if (moonIconMobile) moonIconMobile.classList.add('hidden');
         }
     }
 
