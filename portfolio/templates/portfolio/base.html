@@ -102,11 +102,11 @@
                 html.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
                 currentTheme = 'light';
-                
+
                 // Update desktop icons
                 if (sunIcon) sunIcon.classList.add('hidden');
                 if (moonIcon) moonIcon.classList.remove('hidden');
-                
+
                 // Update mobile icons
                 if (sunIconMobile) sunIconMobile.classList.add('hidden');
                 if (moonIconMobile) moonIconMobile.classList.remove('hidden');
@@ -114,11 +114,11 @@
                 html.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
                 currentTheme = 'dark';
-                
+
                 // Update desktop icons
                 if (sunIcon) sunIcon.classList.remove('hidden');
                 if (moonIcon) moonIcon.classList.add('hidden');
-                
+
                 // Update mobile icons
                 if (sunIconMobile) sunIconMobile.classList.remove('hidden');
                 if (moonIconMobile) moonIconMobile.classList.add('hidden');
@@ -129,7 +129,7 @@
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
+
             if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
                 currentTheme = 'dark';
@@ -137,7 +137,7 @@
                 document.documentElement.classList.remove('dark');
                 currentTheme = 'light';
             }
-            
+
             // Update all theme icons
             updateThemeIcons();
         }
@@ -168,12 +168,12 @@
         function initializeMobileMenu() {
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenu = document.getElementById('mobileMenu');
-            
+
             if (mobileMenuBtn && mobileMenu) {
                 mobileMenuBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     const isHidden = mobileMenu.classList.contains('hidden');
-                    
+
                     if (isHidden) {
                         // Open menu
                         mobileMenu.classList.remove('hidden');
@@ -232,11 +232,11 @@
         function initializeThemeToggles() {
             const themeToggle = document.getElementById('themeToggle');
             const themeToggleMobile = document.getElementById('themeToggleMobile');
-            
+
             if (themeToggle) {
                 themeToggle.addEventListener('click', toggleTheme);
             }
-            
+
             if (themeToggleMobile) {
                 themeToggleMobile.addEventListener('click', toggleTheme);
             }
